@@ -18,7 +18,6 @@ import { drawerWidth } from '../../../common/variables'
 const styles = (theme) => {
   let activeIcon = {
     backgroundColor: theme.palette.primary.main,
-    color: 'white'
   }
   return ({
     hide: {
@@ -105,12 +104,13 @@ class AppDrawer extends Component {
                 }
               }>
                 {isOpen && <ListItemText primary={item.label} />}
+                {console.log('rendering appdrawer', item.id, currentView)}
                 <IconButton
                   color="inherit"
                   aria-label="props.aria-label"
-                  className={classNames(classes.iconButton, (item.id === currentView) ? 'active' : '')}
+                  className={classNames(classes.iconButton, (item.id === currentView) ? 'active' : 'default')}
                 >
-                  <Icon icon={item.icon} active={(item.id === currentView)}/>
+                  <Icon id={item.id} icon={item.icon}/>
                 </IconButton>
               </ListItem>
             )})
