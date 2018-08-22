@@ -7,7 +7,7 @@ const styles = (theme) => ({
     fill: '#333'
   },
   active: {
-    fill: '#fff'
+    fill: '#333'
   }
 })
 

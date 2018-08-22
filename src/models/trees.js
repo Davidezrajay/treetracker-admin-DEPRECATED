@@ -87,9 +87,8 @@ const trees = {
 
     },
     async sortTrees(payload, rootState) {
-      const page = rootState.trees.page
-      const rowsPerPage = rootState.trees.rowsPerPage
-      const newOrder = (rootState.trees.order === 'asc') ? 'desc' : 'asc'
+      const { page, rowsPerPage, order } = rootState.trees;
+      const newOrder = (order === 'asc') ? 'desc' : 'asc';
       const query = `${API_ROOT}/trees?filter[order]=${payload.orderBy} ${newOrder}&filter[limit]=${rowsPerPage}&filter[skip]=${page * rowsPerPage}&filter[fields][lat]=true&filter[fields][lon]=true&filter[fields][id]=true&filter[fields][timeCreated]=true&filter[fields][timeUpdated]=true`;
       Axios.get(query)
       .then((response) => {
