@@ -6,6 +6,7 @@ const trees = {
   state: {
     data: [],
     selected: [],
+    tree: {},
     numSelected: 0,
     page: 0,
     rowsPerPage: 40,
@@ -16,11 +17,18 @@ const trees = {
     displayDrawer: {
       'isOpen': false
     }
-
   },
   reducers: {
     selectAll(state) {
       return { ...state }
+    },
+    setTree(state, id) {
+      const { tree, data } = state;
+      return { ...state, tree: data.find(x => x.id === id) };
+    },
+    getTree(state) {
+      const { tree } = state;
+      return { tree };
     },
     getTrees(state, payload, { page, rowsPerPage, order, orderBy }) {
       return { ...state, data: payload, page: page, rowsPerPage: rowsPerPage, order: order, orderBy: orderBy };

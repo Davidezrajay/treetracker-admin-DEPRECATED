@@ -11,7 +11,9 @@ import TablePagination from '@material-ui/core/TablePagination'
 import dateFormat from 'dateformat'
 import Checkbox from '@material-ui/core/Checkbox'
 import Tooltip from '@material-ui/core/Tooltip'
+import Drawer from '@material-ui/core/Drawer';
 
+import TreeDetails from '../TreeDetails/TreeDetails'
 import EnhancedTableHead from '../../molecules/EnhancedTableHead/EnhancedTableHead'
 
 // change 88 to unit spacing,
@@ -44,6 +46,9 @@ class TreeTable extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      detailsPane: false,
+    }
     this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this)
   }
 
@@ -80,6 +85,16 @@ class TreeTable extends Component {
     this.setState({ selected: newSelected })
   }
 
+  toggleDrawer = (event, id) => {
+    event.preventDefault();
+    const { detailsPane } = this.state;
+    this.setState({
+      detailsPane: !detailsPane
+    });
+
+    this.props.setTree(id);
+  }
+
   onPageChange = (event, page) => {
     this.props.getTreesAsync({ page: page, rowsPerPage: this.props.rowsPerPage })
   }
@@ -93,7 +108,7 @@ class TreeTable extends Component {
   }
 
   render() {
-    const { numSelected, classes, rowsPerPage, selected, order, orderBy, treesArray, getLocationName, treeCount, byId } = this.props
+    const { numSelected, classes, rowsPerPage, selected, order, orderBy, treesArray, getLocationName, treeCount, byId, tree } = this.props
     return (
       <div >
         <Table className={classes.tableBody}>
@@ -121,6 +136,7 @@ class TreeTable extends Component {
               return (
                 <TableRow
                   key={tree.id}
+                  onClick={(event) => this.toggleDrawer(event, tree.id)}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox checked={isSelected} />
@@ -157,6 +173,9 @@ class TreeTable extends Component {
           onChangePage={this.onPageChange}
           onChangeRowsPerPage={this.onChangeRowsPerPage}
         />
+        <Drawer anchor="right" open={this.state.detailsPane} onClose={this.toggleDrawer}>
+          <TreeDetails />
+        </Drawer>
       </div>
     )
   }
@@ -174,14 +193,16 @@ const mapState = state => {
     order: state.trees.order,
     orderBy: state.trees.orderBy,
     numSelected: state.trees.selected.length,
-    byId: state.trees.byId
-
+    byId: state.trees.byId,
+    isOpen: state.trees.displayDrawer.isOpen,
+    tree: state.trees.tree,
   }
 }
 
 const mapDispatch = (dispatch) => ({
   getTreesAsync: ({ page, rowsPerPage, order, orderBy }) => dispatch.trees.getTreesAsync({ page: page, rowsPerPage: rowsPerPage, order: order, orderBy: orderBy }),
-  getLocationName: (id, lat, lon) => dispatch.trees.getLocationName({ id: id, latitude: lat, longitude: lon })
+  getLocationName: (id, lat, lon) => dispatch.trees.getLocationName({ id: id, latitude: lat, longitude: lon }),
+  setTree: (id) => dispatch.trees.setTree(id)
 })
 
 export default compose(
