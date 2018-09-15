@@ -11,11 +11,15 @@ class TreeDetails extends Component {
 
   render() {
     let { tree } = this.props;
-    
+    const treeImage = (tree.imageUrl !== null) ? <img className="tree-image" src={tree.imageUrl}></img> : null;
+    const isAlive = (tree.causeOfDeathId !== null) ? 'Dead' : 'Alive';
+    const treeMissing = (tree.missing) ? 'True' : 'False';
     return (
-      <div>
-        <p>id: {tree.id}</p>
-        <p>position: {tree.lat} {tree.lon}</p>
+      <div className="tree-panel">
+        {treeImage}
+        <p className="tree-location">Location: {tree.lat} {tree.lon}</p>
+        <p className="tree-dead">Status: {isAlive}</p>
+        <p className="tree-missing">Missing: {treeMissing}</p>
       </div>
     )
   }
