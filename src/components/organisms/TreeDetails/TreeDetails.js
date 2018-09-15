@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
-
 class TreeDetails extends Component {
 
   constructor(props) {
@@ -11,12 +10,12 @@ class TreeDetails extends Component {
   }
 
   render() {
-    const { tree } = this.props;
-
+    let { tree } = this.props;
+    
     return (
       <div>
         <p>id: {tree.id}</p>
-        <p>{tree.lat} {tree.lon}</p>
+        <p>position: {tree.lat} {tree.lon}</p>
       </div>
     )
   }
@@ -29,6 +28,4 @@ const mapState = state => {
   }
 }
 
-export default compose(
-  connect(mapState)
-)(TreeDetails)
+export default TreeDetails;

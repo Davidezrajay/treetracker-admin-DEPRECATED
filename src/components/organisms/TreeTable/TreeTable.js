@@ -87,12 +87,11 @@ class TreeTable extends Component {
 
   toggleDrawer = (event, id) => {
     event.preventDefault();
+    if (id !== undefined) this.props.getTreeAsync(id);
     const { detailsPane } = this.state;
     this.setState({
       detailsPane: !detailsPane
     });
-
-    this.props.setTree(id);
   }
 
   onPageChange = (event, page) => {
@@ -173,8 +172,8 @@ class TreeTable extends Component {
           onChangePage={this.onPageChange}
           onChangeRowsPerPage={this.onChangeRowsPerPage}
         />
-        <Drawer anchor="right" open={this.state.detailsPane} onClose={this.toggleDrawer}>
-          <TreeDetails />
+      <Drawer anchor="right" open={this.state.detailsPane} onClose={(event) => this.toggleDrawer(event, undefined)}>
+          <TreeDetails tree={tree}/>
         </Drawer>
       </div>
     )
@@ -202,7 +201,7 @@ const mapState = state => {
 const mapDispatch = (dispatch) => ({
   getTreesAsync: ({ page, rowsPerPage, order, orderBy }) => dispatch.trees.getTreesAsync({ page: page, rowsPerPage: rowsPerPage, order: order, orderBy: orderBy }),
   getLocationName: (id, lat, lon) => dispatch.trees.getLocationName({ id: id, latitude: lat, longitude: lon }),
-  setTree: (id) => dispatch.trees.setTree(id)
+  getTreeAsync: (id) => dispatch.trees.getTreeAsync(id)
 })
 
 export default compose(

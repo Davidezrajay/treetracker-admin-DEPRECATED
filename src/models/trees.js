@@ -22,13 +22,8 @@ const trees = {
     selectAll(state) {
       return { ...state }
     },
-    setTree(state, id) {
-      const { tree, data } = state;
-      return { ...state, tree: data.find(x => x.id === id) };
-    },
-    getTree(state) {
-      const { tree } = state;
-      return { tree };
+    getTree(state, tree) {
+      return { ...state, tree };
     },
     getTrees(state, payload, { page, rowsPerPage, order, orderBy }) {
       return { ...state, data: payload, page: page, rowsPerPage: rowsPerPage, order: order, orderBy: orderBy };
@@ -70,6 +65,12 @@ const trees = {
         const data = response.data
         this.receiveTreeCount(data)
       })
+    },
+    async getTreeAsync(id) {
+      const query = `${API_ROOT}/Trees/${id}`;
+      Axios.get(query)
+        .then((res) => { this.getTree(res.data)})
+        .catch(err => console.error(`ERROR: FAILED TO GET SELECTED TREE ${err}`))
     },
     async getLocationName(payload, rootState) {
       if( (rootState.trees.byId[payload.id] &&
