@@ -1,9 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import 'bootstrap/dist/css/bootstrap.css';
-import registerServiceWorker from './registerServiceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './App'
+import 'typeface-roboto'
+import { init } from "@rematch/core";
+import * as models from "./models"
+import './index.css'
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+const store = init({models})
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
